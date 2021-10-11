@@ -42,6 +42,54 @@ namespace Individuellt_projekt_Viktor
             ConsoleSettings(); // Inställningar på hur konsolfönstret ska se ut
             WelcomeLoop(); // Välkomstmeddelande
 
+        start:
+
+            bool successfull = false;
+
+            Console.WriteLine("1. → Logga in ");
+            Console.WriteLine("2. → Registrera ");
+            Console.WriteLine();
+            Console.Write("Menyval: ");
+            string input = Console.ReadLine();
+
+            while (!successfull)
+            {
+                if (input == "1")
+                {
+
+
+                }
+                else if (input == "2")
+                {
+                    Console.Clear();
+                    Console.WriteLine(String.Format("{0," + (Console.WindowWidth - 25) + "}", "Registrera ny användare"));
+
+                    Console.WriteLine();
+                    Console.Write("Användarnamn: ");
+                    string username = Console.ReadLine();
+                    Console.Write("Pinkod: ");
+                    string password = Console.ReadLine();
+                    Console.Clear();
+                    Console.WriteLine("Användare " + username + " är nu registrerad.");
+                    Thread.Sleep(2000);
+                    Console.Clear();
+                    Console.WriteLine(String.Format("{0," + (Console.WindowWidth - 22) + "}", "Välkommen till bank Gunnarsson"));
+
+                    goto start;
+                }
+
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("Ogiltigt val!");
+                    Thread.Sleep(1000);
+                    Console.Clear();
+                    Console.WriteLine(String.Format("{0," + (Console.WindowWidth - 22) + "}", "Välkommen till bank Gunnarsson"));
+                    Console.WriteLine();
+                    goto start;
+                }
+                break;
+            }
 
 
 
