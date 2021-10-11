@@ -3,11 +3,33 @@ using System.Threading;
 
 namespace Individuellt_projekt_Viktor
 {
+    public class account
+    {
+        public string username;
+        public string password;
+        public double amount1;
+        public double amount2;
+        public double amount3;
+
+        public account(string username, string password, double amount1, double amount2 = 0, double amount3 = 0)
+        {
+            this.username = username;
+            this.password = password;
+            this.amount1 = amount1;
+            this.amount2 = amount2;
+            this.amount3 = amount3;
+
+
+        }
+
+
+    }
     class Program
     {
+
         static void Main(string[] args)
         {
-            var userArray = new account[]
+            var userArray = new account[] // En array som innehåller användarnamn, lösenord och deras kontosaldon.
             {
                     new account("admin","admin",1000,1000,1000),
                     new account("viktor","viktor123",940),
@@ -17,56 +39,50 @@ namespace Individuellt_projekt_Viktor
                     new account("lucas","lucas123",1000.00, 1000.50)
             };
 
-            welcomeLoop();
+            ConsoleSettings(); // Inställningar på hur konsolfönstret ska se ut
+            WelcomeLoop(); // Välkomstmeddelande
 
 
 
 
 
 
-        }
-        static void welcomeLoop() 
-        {
-            
-            
 
-                string welcometext = "Välkommen till bank Gunnarsson!";
 
-                Console.Write(String.Format("{0," + (Console.WindowWidth - 52) + "}", ""));
-                for (int i = 0; i < welcometext.Length; i++)
-                {
-                    Thread.Sleep(100);
-                    Console.Write(welcometext[i]);
 
-                }
-                Console.WriteLine();
-                Console.WriteLine();
 
-            
+
+
 
         }
-
-        public class account
+        static void WelcomeLoop()
         {
-            public string username;
-            public string password;
-            public double amount1;
-            public double amount2;
-            public double amount3;
 
-            public account(string username, string password, double amount1, double amount2 = 0, double amount3 = 0)
+
+
+            string welcometext = "Välkommen till bank Gunnarsson!";
+
+            Console.Write(String.Format("{0," + (Console.WindowWidth - 52) + "}", ""));
+            for (int i = 0; i < welcometext.Length; i++)
             {
-                this.username = username;
-                this.password = password;
-                this.amount1 = amount1;
-                this.amount2 = amount2;
-                this.amount3 = amount3;
-
+                Thread.Sleep(100);
+                Console.Write(welcometext[i]);
 
             }
+            Console.WriteLine();
+            Console.WriteLine();
+
 
 
         }
+
+        static void ConsoleSettings()
+        {
+            Console.WindowHeight = 25;
+            Console.WindowWidth = 70;
+        }
+
+
     }
 
 }
