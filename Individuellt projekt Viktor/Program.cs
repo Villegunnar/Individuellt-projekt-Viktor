@@ -45,6 +45,9 @@ namespace Individuellt_projekt_Viktor
         start:
 
             bool successfull = false;
+            bool loggingin = true;
+            string switchChoice;
+            int targetIndex = 0;
 
             Console.WriteLine("1. → Logga in ");
             Console.WriteLine("2. → Registrera ");
@@ -56,7 +59,37 @@ namespace Individuellt_projekt_Viktor
             {
                 if (input == "1")
                 {
+                    bool Bank = inLogg(userArray, ref targetIndex, ref loggingin);
+                    while (Bank)
+                    {
+                        switchChoice = menu();
 
+                        switch (switchChoice)
+                        {
+
+                            case "1":
+
+                                break;
+                            case "2":
+
+                                break;
+                            case "3":
+
+                                break;
+                            case "4":
+                                LoggingOut();
+                                Console.WriteLine(String.Format("{0," + (Console.WindowWidth - 22) + "}", "Välkommen till bank Gunnarsson"));
+
+
+                                goto start;
+
+                            default:
+                                Ogiltligtval(userArray, targetIndex);
+                                break;
+
+                        }
+
+                    }
 
                 }
                 else if (input == "2")
@@ -74,7 +107,8 @@ namespace Individuellt_projekt_Viktor
                     Thread.Sleep(2000);
                     Console.Clear();
                     Console.WriteLine(String.Format("{0," + (Console.WindowWidth - 22) + "}", "Välkommen till bank Gunnarsson"));
-
+                    Array.Resize(ref userArray, userArray.Length + 1);
+                    userArray[userArray.Length - 1] = new account(username, password, 0, 0);
                     goto start;
                 }
 
@@ -130,7 +164,122 @@ namespace Individuellt_projekt_Viktor
             Console.WindowWidth = 70;
         }
 
+        public static bool inLogg(account[]Users, ref int x, ref bool loggingin)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                Console.Clear();
+                Console.WriteLine(String.Format("{0," + (Console.WindowWidth - 22) + "}", "Välkommen till bank Gunnarsson"));
 
+                Console.WriteLine();
+                Console.Write("Användarnamn: ");
+                var username = Console.ReadLine();
+                Console.Write("Lösenord: ");
+                var password = Console.ReadLine();
+                Console.Clear();
+
+                for (int j = 0; j < Users.Length; j++)
+                {
+                    if (username == Users[j].username && password == Users[j].password)
+                    {
+                        LoggingIn();
+
+                        Console.Clear();
+                        Console.WriteLine(String.Format("{0," + (Console.WindowWidth - 23) + "}", "Inloggad som användare: " + username));
+                        Console.WriteLine();
+
+
+                        x = j;
+                        return true;
+
+                    }
+
+                }
+                Console.WriteLine("Användarnamnet eller lösernordet var fel!");
+
+                Thread.Sleep(1000);
+                Console.Clear();
+
+            }
+            Console.WriteLine("För många försök, Konto spärrat", Console.ForegroundColor);
+
+            loggingin = false;
+            return false;
+        }
+
+        static void LoggingIn()
+        {
+            Console.Clear();
+            string bufferDots = "...";
+            Console.Write(String.Format("{0," + (Console.WindowWidth - 30) + "}", "Du loggas in"));
+            // Console.Write("Du loggas in");
+            for (int i = 0; i < bufferDots.Length; i++)
+            {
+                Thread.Sleep(400);
+                Console.Write(bufferDots[i]);
+
+            }
+            Console.Clear();
+            Console.Write(String.Format("{0," + (Console.WindowWidth - 30) + "}", "Du loggas in"));
+            for (int i = 0; i < bufferDots.Length; i++)
+            {
+                Thread.Sleep(400);
+                Console.Write(bufferDots[i]);
+
+            }
+            Console.Clear();
+
+
+
+        }
+
+        static void LoggingOut()
+        {
+
+            Console.Clear();
+            string bufferDots = "...";
+            Console.Write(String.Format("{0," + (Console.WindowWidth - 30) + "}", "Du loggas ut"));
+            // Console.Write("Du loggas in");
+            for (int i = 0; i < bufferDots.Length; i++)
+            {
+                Thread.Sleep(400);
+                Console.Write(bufferDots[i]);
+
+            }
+            Console.Clear();
+            Console.Write(String.Format("{0," + (Console.WindowWidth - 30) + "}", "Du loggas ut"));
+            for (int i = 0; i < bufferDots.Length; i++)
+            {
+                Thread.Sleep(400);
+                Console.Write(bufferDots[i]);
+
+            }
+            Console.Clear();
+
+
+
+        }
+
+        static string menu()
+        {
+            Console.WriteLine("1. → Se dina konton och saldo");
+            Console.WriteLine("2. → Överföring mellan konton");
+            Console.WriteLine("3. → Ta ut pengar");
+            Console.WriteLine("4. → Logga ut");
+            Console.WriteLine();
+            return Console.ReadLine();
+        }
+
+        static void Ogiltligtval(account[] Users, int tempIndex)
+        {
+            Console.Clear();
+            Console.WriteLine("Ogiltigt val!");
+
+            Thread.Sleep(1000);
+            Console.Clear();
+            Console.WriteLine(String.Format("{0," + (Console.WindowWidth - 23) + "}", "Inloggad som anävndare: " + Users[tempIndex].username));
+            Console.WriteLine();
+        }
     }
 
 }
