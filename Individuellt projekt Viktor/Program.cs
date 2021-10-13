@@ -74,7 +74,7 @@ namespace Individuellt_projekt_Viktor
                                 TransferMoneyMeny(userArray, targetIndex);
                                 break;
                             case "3":
-
+                                WithdralMoneyMeny(userArray, targetIndex);
                                 break;
                             case "4":
                                 LoggingOut();
@@ -275,6 +275,7 @@ namespace Individuellt_projekt_Viktor
 
         static void TransferMoneyMeny(account[] Users, int tempIndex) 
         {
+           
             Console.Clear();
             Console.WriteLine(String.Format("{0," + (Console.WindowWidth - 25) + "}", "Överföring mellan konton"));
             Console.WriteLine();
@@ -310,6 +311,10 @@ namespace Individuellt_projekt_Viktor
             {
                 Users[tempIndex].amount3 = Users[tempIndex].amount3 - moveAmount;
             }
+            else
+            {
+               
+            }
 
 
             Console.WriteLine("Välj vilket konto du vill flytta pengar till");
@@ -338,6 +343,59 @@ namespace Individuellt_projekt_Viktor
             Console.WriteLine(String.Format("{0," + (Console.WindowWidth - 23) + "}", "Inloggad som anävndare: " + Users[tempIndex].username));
             Console.WriteLine();
         } // Menyval där man kan föra över pengar mellan sina konton
+
+        static void WithdralMoneyMeny(account[] Users, int tempIndex)
+        {
+            Console.Clear();
+            Console.WriteLine(String.Format("{0," + (Console.WindowWidth - 30) + "}", "Ta ut pengar"));
+            Console.WriteLine();
+            Console.WriteLine("1. → Lönekonto: " + Users[tempIndex].amount1 + " kr");
+            if (Users[tempIndex].amount2 != 0)
+            {
+                Console.WriteLine("2. → Sparkonto: " + Users[tempIndex].amount2 + " kr");
+            }
+            if (Users[tempIndex].amount3 != 0)
+            {
+                Console.WriteLine("3. → Räknekonto: " + Users[tempIndex].amount3 + " kr");
+            }
+            Console.WriteLine();
+            Console.WriteLine("Från vilket konto vill du ta ut pengar ifrån?");
+            string withdralFromAccount = Console.ReadLine();
+            Console.WriteLine("Hur mycket pengar vill du ta ut?");
+            double withdralAmount = Int16.Parse(Console.ReadLine());
+
+            Console.Write("Lösenord: ");
+            string withdrawalPassword = Console.ReadLine();
+
+            if (withdrawalPassword == Users[tempIndex].password)
+            {
+
+                if (withdralFromAccount == "1")
+                {
+
+                    Users[tempIndex].amount1 = Users[tempIndex].amount1 - withdralAmount;
+                    Console.WriteLine("Uttaget lyckades!");
+
+                }
+                else if (withdralFromAccount == "2")
+                {
+                    Users[tempIndex].amount2 = Users[tempIndex].amount2 - withdralAmount;
+                    Console.WriteLine("Uttaget lyckades!");
+                }
+                else if (withdralFromAccount == "3")
+                {
+                    Users[tempIndex].amount3 = Users[tempIndex].amount3 - withdralAmount;
+                    Console.WriteLine("Uttaget lyckades!");
+                }
+
+            }
+
+            Console.WriteLine("Klicka enter för att komma till huvudmenyn");
+            Console.ReadLine();
+            Console.Clear();
+            Console.WriteLine(String.Format("{0," + (Console.WindowWidth - 23) + "}", "Inloggad som anävndare: " + Users[tempIndex].username));
+            Console.WriteLine();
+        }
 
         static void Ogiltligtval(account[] Users, int tempIndex)
         {
