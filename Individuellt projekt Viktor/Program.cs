@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace Individuellt_projekt_Viktor
 {
-    public class account
+    public class Account
     {
         public string username;
         public string password;
@@ -11,7 +11,7 @@ namespace Individuellt_projekt_Viktor
         public double amount2;
         public double amount3;
 
-        public account(string username, string password, double amount1, double amount2 = 0, double amount3 = 0)
+        public Account(string username, string password, double amount1, double amount2 = 0, double amount3 = 0)
         {
             this.username = username;
             this.password = password;
@@ -23,24 +23,24 @@ namespace Individuellt_projekt_Viktor
         }
 
 
-    } 
+    }
     class Program
     {
 
         static void Main(string[] args)
         {
-            var userArray = new account[] // En array som innehåller användarnamn, lösenord och deras kontosaldon.  
+            var userArray = new Account[] // En array som innehåller användarnamn, lösenord och deras kontosaldon.  
             {
-                    new account("admin","admin",1000,1000,1000),
-                    new account("viktor","viktor123",940),
-                    new account("erik","erik123",1000,550.50, 220.50),
-                    new account("anas","anas123",1000,1000.50),
-                    new account("tobias","tobias123",1000,1000.40,10000),
-                    new account("lucas","lucas123",1000.00, 1000.50)
+                    new Account("admin","admin",1000,1000,1000),
+                    new Account("viktor","viktor123",940),
+                    new Account("erik","erik123",1000,550.50, 220.50),
+                    new Account("anas","anas123",1000,1000.50),
+                    new Account("tobias","tobias123",1000,1000.40,10000),
+                    new Account("lucas","lucas123",1000.00, 1000.50)
             };
 
-            ConsoleSettings(); 
-            WelcomeLoop(); 
+            ConsoleSettings();
+            WelcomeLoop();
 
         start:
 
@@ -109,8 +109,8 @@ namespace Individuellt_projekt_Viktor
                         Thread.Sleep(2000);
                         Console.WriteLine();
                         Console.WriteLine("Hur mycket pengar vill du sätta in på lönekontot? (kr/öre)");
-                        
-                        
+
+
                     }
                     Console.Clear();
                     Console.WriteLine("Användare " + username + " är nu registrerad. Med " + putInMoney + "kr på lönekontot!");
@@ -118,13 +118,13 @@ namespace Individuellt_projekt_Viktor
                     Console.Clear();
                     Console.WriteLine(String.Format("{0," + (Console.WindowWidth - 22) + "}", "Välkommen till bank Gunnarsson"));
                     Array.Resize(ref userArray, userArray.Length + 1);
-                    userArray[userArray.Length - 1] = new account(username, password, putInMoney, 0);
+                    userArray[userArray.Length - 1] = new Account(username, password, putInMoney, 0);
                     goto start;
                 }
 
                 else
                 {
-                    Ogiltligtval(userArray,targetIndex);
+                    Ogiltligtval(userArray, targetIndex);
                     goto start;
                 }
                 break;
@@ -150,7 +150,7 @@ namespace Individuellt_projekt_Viktor
 
 
 
-        } 
+        }
 
         static void ConsoleSettings() // Inställningar på hur konsolfönstret ska se ut
         {
@@ -158,7 +158,7 @@ namespace Individuellt_projekt_Viktor
             Console.WindowWidth = 70;
         }
 
-        public static bool Inlogg(account[]Users, ref int x, ref bool loggingin) /* En bool som blir true eller false beroende på om man angivit rätt användare och 
+        public static bool Inlogg(Account[] Users, ref int x, ref bool loggingin) /* En bool som blir true eller false beroende på om man angivit rätt användare och 
                                                                                     lösenord som finns med i arrayen med kontouppgifterna */
         {
             for (int i = 0; i < 3; i++) // En loop som ger användaren 3 försök att skriva in rätt användarnamn och lösen.
@@ -264,7 +264,7 @@ namespace Individuellt_projekt_Viktor
             return Console.ReadLine();
         } // Menyn som visas när en användare loggats in och som returnerar användarens val till vilket switch man vill in i.
 
-        static void DisplayMoneyMenu(account[] Users, int tempIndex)
+        static void DisplayMoneyMenu(Account[] Users, int tempIndex)
         {
             Console.Clear();
             Console.WriteLine(String.Format("{0," + (Console.WindowWidth - 24) + "}", "Se dina konton och saldo"));
@@ -287,9 +287,9 @@ namespace Individuellt_projekt_Viktor
             Console.WriteLine();
         } // Menyval som visar konton och saldon
 
-        static void TransferMoneyMeny(account[] Users, int tempIndex) 
+        static void TransferMoneyMeny(Account[] Users, int tempIndex)
         {
-           
+
             Console.Clear();
             Console.WriteLine(String.Format("{0," + (Console.WindowWidth - 25) + "}", "Överföring mellan konton"));
             Console.WriteLine();
@@ -304,31 +304,83 @@ namespace Individuellt_projekt_Viktor
             }
             Console.WriteLine();
 
-            Console.Write("Välj vilket konto du vill flytta pengar ifrån: ");
+
+            Console.WriteLine("Välj vilket konto du vill flytta pengar ifrån:");
+
+
+
+
+
+
             string moveFromAccount = Console.ReadLine();
 
+
+
+
+
+
+
+
+
+
+            bool moveAmountBool = true;
+
+        start2:
             Console.WriteLine("Hur mycket vill du flytta?");
-
-            double moveAmount = Int32.Parse(Console.ReadLine());
-
-            if (moveFromAccount == "1")
+            double moveAmount = double.Parse(Console.ReadLine());
+            while (moveAmountBool)
             {
+                switch (moveFromAccount)
+                {
+                    case "1":
+                        if (Users[tempIndex].amount1 >= moveAmount)
+                        {
+                            Users[tempIndex].amount1 = Users[tempIndex].amount1 - moveAmount;
+                            moveAmountBool = false;
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Du har för lite pengar på det kontot, ange en mindre summa:");
+                            goto start2;
 
-                Users[tempIndex].amount1 = Users[tempIndex].amount1 - moveAmount;
+                        }
 
+
+                    case "2":
+
+                        if (Users[tempIndex].amount2 >= moveAmount)
+                        {
+                            Users[tempIndex].amount2 = Users[tempIndex].amount2 - moveAmount;
+                            moveAmountBool = false;
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Du har för lite pengar på det kontot, ange en mindre summa:");
+                            goto start2;
+                        }
+
+                    case "3":
+                        if (Users[tempIndex].amount3 >= moveAmount)
+                        {
+                            Users[tempIndex].amount3 = Users[tempIndex].amount3 - moveAmount;
+                            moveAmountBool = false;
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Du har för lite pengar på det kontot, ange en mindre summa:");
+                            goto start2;
+                        }
+
+
+
+                    default:
+                        break;
+                }
             }
-            else if (moveFromAccount == "2")
-            {
-                Users[tempIndex].amount2 = Users[tempIndex].amount2 - moveAmount;
-            }
-            else if (moveFromAccount == "3")
-            {
-                Users[tempIndex].amount3 = Users[tempIndex].amount3 - moveAmount;
-            }
-            else
-            {
-               
-            }
+
 
 
             Console.WriteLine("Välj vilket konto du vill flytta pengar till");
@@ -358,7 +410,8 @@ namespace Individuellt_projekt_Viktor
             Console.WriteLine();
         } // Menyval där man kan föra över pengar mellan sina konton
 
-        static void WithdralMoneyMeny(account[] Users, int tempIndex)
+
+        static void WithdralMoneyMeny(Account[] Users, int tempIndex)
         {
             Console.Clear();
             Console.WriteLine(String.Format("{0," + (Console.WindowWidth - 30) + "}", "Ta ut pengar"));
@@ -411,7 +464,7 @@ namespace Individuellt_projekt_Viktor
             Console.WriteLine();
         } // Menyval där man kan ta ut pengar från konton
 
-        static void Ogiltligtval(account[] Users, int tempIndex) 
+        static void Ogiltligtval(Account[] Users, int tempIndex)
         {
             Console.Clear();
             Console.WriteLine("Ogiltigt val!");
