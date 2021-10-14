@@ -289,7 +289,7 @@ namespace Individuellt_projekt_Viktor
 
         static void TransferMoneyMeny(Account[] Users, int tempIndex)
         {
-
+            start1:
             Console.Clear();
             Console.WriteLine(String.Format("{0," + (Console.WindowWidth - 25) + "}", "Överföring mellan konton"));
             Console.WriteLine();
@@ -304,18 +304,35 @@ namespace Individuellt_projekt_Viktor
             }
             Console.WriteLine();
 
-
+        
             Console.WriteLine("Välj vilket konto du vill flytta pengar ifrån:");
 
+            
+           string moveFromAccount = Console.ReadLine();
 
 
 
 
+            if ((moveFromAccount == "1" && Users[tempIndex].amount1 == 0) || 
+                (moveFromAccount == "2" && Users[tempIndex].amount2 == 0) || 
+                (moveFromAccount == "3" && Users[tempIndex].amount3 == 0))
+            {
+                Console.WriteLine("Det finns inga pengar på detta konton");
+                Thread.Sleep(2000);
+                goto start1;
+            }
+            if ((moveFromAccount != "1") && 
+                (moveFromAccount != "2") && 
+                (moveFromAccount != "3"))
+            {
+                Console.Clear();
+                Console.WriteLine("Ogiltligt val!");
+                Thread.Sleep(2000);
+                goto start1;
+            }
 
-            string moveFromAccount = Console.ReadLine();
 
-
-
+            
 
 
 
@@ -327,7 +344,18 @@ namespace Individuellt_projekt_Viktor
 
         start2:
             Console.WriteLine("Hur mycket vill du flytta?");
-            double moveAmount = double.Parse(Console.ReadLine());
+            //double moveAmount = double.Parse(Console.ReadLine());
+            double moveAmount;
+
+            while (!double.TryParse(Console.ReadLine(), out moveAmount))
+            {
+                Console.WriteLine("Ogiltigt val!");
+                Thread.Sleep(2000);
+                
+
+
+
+            }
             while (moveAmountBool)
             {
                 switch (moveFromAccount)
@@ -343,7 +371,7 @@ namespace Individuellt_projekt_Viktor
                         {
                             Console.WriteLine("Du har för lite pengar på det kontot, ange en mindre summa:");
                             goto start2;
-
+                            
                         }
 
 
@@ -377,11 +405,13 @@ namespace Individuellt_projekt_Viktor
 
 
                     default:
-                        break;
+                        
+                        Console.WriteLine("Det finns inget konto som heter " + moveFromAccount + ". Testa igen");
+                        Thread.Sleep(1000);
+                        goto start1;
+                        
                 }
             }
-
-
 
             Console.WriteLine("Välj vilket konto du vill flytta pengar till");
             string moveToAccount = Console.ReadLine();
