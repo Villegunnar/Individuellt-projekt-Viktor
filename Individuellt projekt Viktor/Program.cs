@@ -23,7 +23,7 @@ namespace Individuellt_projekt_Viktor
         }
 
 
-    }
+    } 
     class Program
     {
 
@@ -55,7 +55,7 @@ namespace Individuellt_projekt_Viktor
             Console.Write("Menyval: ");
             string input = Console.ReadLine();
 
-            while (!successfull)
+            while (!successfull) // Huvudloopen som håller igång programmet
             {
                 if (input == "1")
                 {
@@ -100,13 +100,25 @@ namespace Individuellt_projekt_Viktor
                     string username = Console.ReadLine();
                     Console.Write("Pinkod: ");
                     string password = Console.ReadLine();
+                    Console.WriteLine("Hur mycket pengar vill du sätta in på lönekontot?");
+                    double putInMoney;
+                    while (!double.TryParse(Console.ReadLine(), out putInMoney))
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Ogiltigt val, ange med siffror tack!");
+                        Thread.Sleep(2000);
+                        Console.WriteLine();
+                        Console.WriteLine("Hur mycket pengar vill du sätta in på lönekontot? (kr/öre)");
+                        
+                        
+                    }
                     Console.Clear();
-                    Console.WriteLine("Användare " + username + " är nu registrerad.");
-                    Thread.Sleep(2000);
+                    Console.WriteLine("Användare " + username + " är nu registrerad. Med " + putInMoney + "kr på lönekontot!");
+                    Thread.Sleep(3000);
                     Console.Clear();
                     Console.WriteLine(String.Format("{0," + (Console.WindowWidth - 22) + "}", "Välkommen till bank Gunnarsson"));
                     Array.Resize(ref userArray, userArray.Length + 1);
-                    userArray[userArray.Length - 1] = new account(username, password, 0, 0);
+                    userArray[userArray.Length - 1] = new account(username, password, putInMoney, 0);
                     goto start;
                 }
 
@@ -146,9 +158,10 @@ namespace Individuellt_projekt_Viktor
             Console.WindowWidth = 70;
         }
 
-        public static bool Inlogg(account[]Users, ref int x, ref bool loggingin)
+        public static bool Inlogg(account[]Users, ref int x, ref bool loggingin) /* En bool som blir true eller false beroende på om man angivit rätt användare och 
+                                                                                    lösenord som finns med i arrayen med kontouppgifterna */
         {
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++) // En loop som ger användaren 3 försök att skriva in rätt användarnamn och lösen.
             {
                 Console.Clear();
                 Console.WriteLine(String.Format("{0," + (Console.WindowWidth - 22) + "}", "Välkommen till bank Gunnarsson"));
@@ -160,7 +173,8 @@ namespace Individuellt_projekt_Viktor
                 var password = Console.ReadLine();
                 Console.Clear();
 
-                for (int j = 0; j < Users.Length; j++)
+                for (int j = 0; j < Users.Length; j++) /* En loop som loopar igenom UserArray för att matcha användarnamn och lösenord 
+                                                          och lägger detta indexet i j som jag stoppar in i x */
                 {
                     if (username == Users[j].username && password == Users[j].password)
                     {
@@ -212,7 +226,7 @@ namespace Individuellt_projekt_Viktor
 
 
 
-        }
+        } // Text som visas när man loggas in
 
         static void LoggingOut()
         {
@@ -238,7 +252,7 @@ namespace Individuellt_projekt_Viktor
 
 
 
-        }
+        } // Text som visas när man loggas ut
 
         static string Menu()
         {
@@ -248,7 +262,7 @@ namespace Individuellt_projekt_Viktor
             Console.WriteLine("4. → Logga ut");
             Console.WriteLine();
             return Console.ReadLine();
-        }
+        } // Menyn som visas när en användare loggats in och som returnerar användarens val till vilket switch man vill in i.
 
         static void DisplayMoneyMenu(account[] Users, int tempIndex)
         {
@@ -395,9 +409,9 @@ namespace Individuellt_projekt_Viktor
             Console.Clear();
             Console.WriteLine(String.Format("{0," + (Console.WindowWidth - 23) + "}", "Inloggad som anävndare: " + Users[tempIndex].username));
             Console.WriteLine();
-        }
+        } // Menyval där man kan ta ut pengar från konton
 
-        static void Ogiltligtval(account[] Users, int tempIndex)
+        static void Ogiltligtval(account[] Users, int tempIndex) 
         {
             Console.Clear();
             Console.WriteLine("Ogiltigt val!");
@@ -406,7 +420,7 @@ namespace Individuellt_projekt_Viktor
             Console.Clear();
             Console.WriteLine(String.Format("{0," + (Console.WindowWidth - 23) + "}", "Inloggad som anävndare: " + Users[tempIndex].username));
             Console.WriteLine();
-        }
+        } // Text som kommer upp när användaren agivit fel input
     }
 
 }
