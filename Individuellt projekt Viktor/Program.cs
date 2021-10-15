@@ -100,7 +100,7 @@ namespace Individuellt_projekt_Viktor
                     string username = Console.ReadLine();
                     Console.Write("Pinkod: ");
                     string password = Console.ReadLine();
-                    Console.WriteLine("Hur mycket pengar vill du sätta in på lönekontot?");
+                    Console.WriteLine("Hur mycket pengar vill du sätta in på lönekontot? (kr)");
                     double putInMoney;
                     while (!double.TryParse(Console.ReadLine(), out putInMoney))
                     {
@@ -108,7 +108,7 @@ namespace Individuellt_projekt_Viktor
                         Console.WriteLine("Ogiltigt val, ange med siffror tack!");
                         Thread.Sleep(2000);
                         Console.WriteLine();
-                        Console.WriteLine("Hur mycket pengar vill du sätta in på lönekontot? (kr/öre)");
+                        Console.WriteLine("Hur mycket pengar vill du sätta in på lönekontot? (kr)");
 
 
                     }
@@ -289,7 +289,7 @@ namespace Individuellt_projekt_Viktor
 
         static void TransferMoneyMeny(Account[] Users, int tempIndex)
         {
-            start1:
+
             Console.Clear();
             Console.WriteLine(String.Format("{0," + (Console.WindowWidth - 25) + "}", "Överföring mellan konton"));
             Console.WriteLine();
@@ -304,35 +304,33 @@ namespace Individuellt_projekt_Viktor
             }
             Console.WriteLine();
 
-        
+        start1:
             Console.WriteLine("Välj vilket konto du vill flytta pengar ifrån:");
 
-            
-           string moveFromAccount = Console.ReadLine();
+
+            string moveFromAccount = Console.ReadLine();
 
 
 
 
-            if ((moveFromAccount == "1" && Users[tempIndex].amount1 == 0) || 
-                (moveFromAccount == "2" && Users[tempIndex].amount2 == 0) || 
+            if ((moveFromAccount == "1" && Users[tempIndex].amount1 == 0) ||
+                (moveFromAccount == "2" && Users[tempIndex].amount2 == 0) ||
                 (moveFromAccount == "3" && Users[tempIndex].amount3 == 0))
             {
                 Console.WriteLine("Det finns inga pengar på detta konton");
-                Thread.Sleep(2000);
+
                 goto start1;
             }
-            if ((moveFromAccount != "1") && 
-                (moveFromAccount != "2") && 
+            if ((moveFromAccount != "1") &&
+                (moveFromAccount != "2") &&
                 (moveFromAccount != "3"))
             {
-                Console.Clear();
                 Console.WriteLine("Ogiltligt val!");
-                Thread.Sleep(2000);
                 goto start1;
             }
 
 
-            
+
 
 
 
@@ -350,8 +348,8 @@ namespace Individuellt_projekt_Viktor
             while (!double.TryParse(Console.ReadLine(), out moveAmount))
             {
                 Console.WriteLine("Ogiltigt val!");
-                Thread.Sleep(2000);
-                
+
+
 
 
 
@@ -371,7 +369,7 @@ namespace Individuellt_projekt_Viktor
                         {
                             Console.WriteLine("Du har för lite pengar på det kontot, ange en mindre summa:");
                             goto start2;
-                            
+
                         }
 
 
@@ -405,17 +403,30 @@ namespace Individuellt_projekt_Viktor
 
 
                     default:
-                        
+
                         Console.WriteLine("Det finns inget konto som heter " + moveFromAccount + ". Testa igen");
                         Thread.Sleep(1000);
                         goto start1;
-                        
+
                 }
             }
-
+        start3:
             Console.WriteLine("Välj vilket konto du vill flytta pengar till");
             string moveToAccount = Console.ReadLine();
-            if (moveToAccount == "1")
+            if ((moveToAccount != "1") &&
+                (moveToAccount != "2") &&
+                (moveToAccount != "3"))
+            {
+                Console.WriteLine("Ogiltligt val!");
+                goto start3;
+            }
+            if (moveToAccount == moveFromAccount)
+            {
+
+                Console.WriteLine("Du kan inte välja att skicka pengar till samma konto.");
+                goto start3;
+            }
+            else if (moveToAccount == "1")
             {
                 Users[tempIndex].amount1 = Users[tempIndex].amount1 + moveAmount;
                 Console.WriteLine("Överföringen lyckades!");
@@ -433,6 +444,7 @@ namespace Individuellt_projekt_Viktor
             }
 
 
+
             Console.WriteLine("Klicka enter för att komma till huvudmenyn");
             Console.ReadLine();
             Console.Clear();
@@ -443,6 +455,7 @@ namespace Individuellt_projekt_Viktor
 
         static void WithdralMoneyMeny(Account[] Users, int tempIndex)
         {
+            
             Console.Clear();
             Console.WriteLine(String.Format("{0," + (Console.WindowWidth - 30) + "}", "Ta ut pengar"));
             Console.WriteLine();
@@ -456,36 +469,119 @@ namespace Individuellt_projekt_Viktor
                 Console.WriteLine("3. → Räknekonto: " + Users[tempIndex].amount3 + " kr");
             }
             Console.WriteLine();
+        start4:
             Console.WriteLine("Från vilket konto vill du ta ut pengar ifrån?");
             string withdralFromAccount = Console.ReadLine();
-            Console.WriteLine("Hur mycket pengar vill du ta ut?");
-            double withdralAmount = Int16.Parse(Console.ReadLine());
 
-            Console.Write("Lösenord: ");
-            string withdrawalPassword = Console.ReadLine();
 
-            if (withdrawalPassword == Users[tempIndex].password)
+
+
+            if ((withdralFromAccount == "1" && Users[tempIndex].amount1 == 0) ||
+                (withdralFromAccount == "2" && Users[tempIndex].amount2 == 0) ||
+                (withdralFromAccount == "3" && Users[tempIndex].amount3 == 0))
             {
+                Console.WriteLine("Det finns inga pengar på detta konton");
 
-                if (withdralFromAccount == "1")
+                goto start4;
+            }
+
+            if ((withdralFromAccount != "1") &&
+                (withdralFromAccount != "2") &&
+                (withdralFromAccount != "3"))
+            {
+                Console.WriteLine("Ogiltligt val!");
+                goto start4;
+            }
+        start5:
+            Console.WriteLine("Hur mycket pengar vill du ta ut?");
+            // double withdralAmount = Int16.Parse(Console.ReadLine());
+            double withdralAmount;
+
+
+            while (!double.TryParse(Console.ReadLine(), out withdralAmount))
+            {
+                Console.WriteLine("Ogiltigt val!");
+            }
+
+
+
+            if ((withdralFromAccount == "1" && Users[tempIndex].amount1 < withdralAmount) ||
+                (withdralFromAccount == "2" && Users[tempIndex].amount2 < withdralAmount) ||
+                (withdralFromAccount == "3" && Users[tempIndex].amount3 < withdralAmount))
+            {
+                Console.WriteLine("Du kan inte ta ut mer pengar än vad som finns på kontot.");
+                goto start5;
+            }
+            if (withdralFromAccount == "1" && Users[tempIndex].amount1 >= withdralAmount)
+            {
+                for (int i = 0; i < 3; i++)
                 {
 
-                    Users[tempIndex].amount1 = Users[tempIndex].amount1 - withdralAmount;
-                    Console.WriteLine("Uttaget lyckades!");
 
+                    Console.Write("Lösenord: ");
+                    string withdrawalPassword = Console.ReadLine();
+                    if (withdrawalPassword == Users[tempIndex].password)
+                    {
+                        Users[tempIndex].amount1 = Users[tempIndex].amount1 - withdralAmount;
+                        i = 3;
+                        Console.WriteLine("Uttaget lyckades!");
+                        goto start6;
+                    }
+                    Console.WriteLine("Fel lösenord!");
                 }
-                else if (withdralFromAccount == "2")
+                Console.WriteLine("Du skrev in fel lösenord för många gånger...");
+            }
+
+
+
+
+            if (withdralFromAccount == "2" && Users[tempIndex].amount2 >= withdralAmount)
+            {
+                for (int i = 0; i < 3; i++)
                 {
-                    Users[tempIndex].amount2 = Users[tempIndex].amount2 - withdralAmount;
-                    Console.WriteLine("Uttaget lyckades!");
+
+
+                    Console.Write("Lösenord: ");
+                    string withdrawalPassword = Console.ReadLine();
+                    if (withdrawalPassword == Users[tempIndex].password)
+                    {
+                        Users[tempIndex].amount2 = Users[tempIndex].amount2 - withdralAmount;
+                        i = 3;
+                        Console.WriteLine("Uttaget lyckades!");
+                        goto start6;
+                    }
+                    Console.WriteLine("Fel lösenord!");
                 }
-                else if (withdralFromAccount == "3")
-                {
-                    Users[tempIndex].amount3 = Users[tempIndex].amount3 - withdralAmount;
-                    Console.WriteLine("Uttaget lyckades!");
-                }
+                Console.WriteLine("Du skrev in fel lösenord för många gånger...");
+                
 
             }
+            if (withdralFromAccount == "3" && Users[tempIndex].amount3 >= withdralAmount)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+
+
+                    Console.Write("Lösenord: ");
+                    string withdrawalPassword = Console.ReadLine();
+                    if (withdrawalPassword == Users[tempIndex].password)
+                    {
+                        Users[tempIndex].amount3 = Users[tempIndex].amount3 - withdralAmount;
+                        i = 3;
+                        Console.WriteLine("Uttaget lyckades!");
+                        goto start6;
+                    }
+                    Console.WriteLine("Fel lösenord!");
+                }
+                Console.WriteLine("Du skrev in fel lösenord för många gånger...");
+            }
+
+
+
+
+
+
+            start6:
 
             Console.WriteLine("Klicka enter för att komma till huvudmenyn");
             Console.ReadLine();
